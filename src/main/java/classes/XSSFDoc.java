@@ -14,19 +14,35 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import util.CustomerC;
 
-public class XSSFDoc  {
+public class XSSFDoc {
     private static final String fileName = "C:\\util\\planilha\\customer.xlsx";
     List<CustomerC> customer = new ArrayList<CustomerC>();
 
 
-
     public XSSFDoc() throws IOException {
-        FileInputStream arquivo  = new FileInputStream(new File(XSSFDoc.fileName));
+        FileInputStream arquivo = new FileInputStream(new File(XSSFDoc.fileName));
         XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
         XSSFSheet sheetCustomer = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheetCustomer.iterator();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Iterator<Cell> cellIterator = row.cellIterator();
+
+            CustomerC customerC = new CustomerC();
+            customer.add(customerC);
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                switch (cell.getColumnIndex()) {
+                    case 0:
 
 
 
 
+
+
+
+                }
+            }
+        }
     }
 }
