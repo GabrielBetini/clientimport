@@ -16,11 +16,10 @@ import util.Endereco;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class CustomerC {
 
     private ArrayList<Endereco> enderecos = new ArrayList<Endereco>();
-    Endereco a = new Endereco();
-
 
     private int rowNumber = 0;
     private Integer birthday = 0;
