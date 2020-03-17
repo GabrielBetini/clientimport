@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class CustomerC {
 
     private int rowNumber = 0;
     private Integer birthday = 0;
-    private ZonedDateTime atualizacao;
     private Integer codigo = 0;
     private final String tipoCustomer = "CLIENTE";
     private String municipio = "";
@@ -39,7 +37,6 @@ public class CustomerC {
     private String celular = "";
     private String fone = "";
     private String observacao = "";
-
     //    @JoinTable(name = "Endereco",
 //            joinColumns = {@JoinColumn(name = "codCostumer", referencedColumnName = "codigo")},
 //            inverseJoinColumns = {@JoinColumn(name = "codEndereco", referencedColumnName = "codigo")})
