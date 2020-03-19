@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class ClientJson {
     CustomerC customerC = new CustomerC();
-   XSSFDoc docAssignment = new XSSFDoc();
+    XSSFDoc docAssignment = new XSSFDoc();
 
 
     private final OkHttpClient httpClient = new OkHttpClient();
@@ -40,7 +40,7 @@ public class ClientJson {
                 .post(body)
                 .build();
         //The response
-       try (Response response = httpClient.newCall(request).execute()){
+        try (Response response = httpClient.newCall(request).execute()) {
 
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response + customerC.toString());
             // Get response body

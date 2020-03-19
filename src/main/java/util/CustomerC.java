@@ -1,16 +1,11 @@
 package util;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
-
-import util.Endereco;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +15,6 @@ public class CustomerC {
 
     private ArrayList<Endereco> enderecos = new ArrayList<Endereco>();
 
-    private int rowNumber = 0;
     private Integer birthday = 0;
     private Integer codigo = 0;
     private final String tipoCustomer = "CLIENTE";
@@ -37,11 +31,11 @@ public class CustomerC {
     private String celular = "";
     private String fone = "";
     private String observacao = "";
+
     //    @JoinTable(name = "Endereco",
 //            joinColumns = {@JoinColumn(name = "codCostumer", referencedColumnName = "codigo")},
 //            inverseJoinColumns = {@JoinColumn(name = "codEndereco", referencedColumnName = "codigo")})
 //    @ManyToMany
-//    private List<Endereco> enderecos;
 
     public String toString() {
         return "CustomerC{" +

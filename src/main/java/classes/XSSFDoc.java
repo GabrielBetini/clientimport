@@ -13,33 +13,43 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import util.CustomerC;
+import util.Endereco;
 
 public class XSSFDoc {
     private static final String fileName = "C:\\util\\planilha\\customer.xlsx";
-    List<CustomerC> customer = new ArrayList<CustomerC>();
-
+    private List<CustomerC> customer = new ArrayList<CustomerC>();
 
     public XSSFDoc() throws IOException {
-        FileInputStream arquivo = new FileInputStream(new File(XSSFDoc.fileName));
-        XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
-        XSSFSheet sheetCustomer = workbook.getSheetAt(0);
-        Iterator<Row> rowIterator = sheetCustomer.iterator();
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            Iterator<Cell> cellIterator = row.cellIterator();
+        try {
+            FileInputStream arquivo = new FileInputStream(new File(XSSFDoc.fileName));
+            XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
+            XSSFSheet sheetCustomer = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheetCustomer.iterator();
 
-            CustomerC customerC = new CustomerC();
-            customer.add(customerC);
-            while (cellIterator.hasNext()) {
-                Cell cell = cellIterator.next();
-                switch (cell.getColumnIndex()) {
-                    case 0:
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+
+                customer.add(new CustomerC());
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    switch (cell.getColumnIndex()) {
+                        case 0:
 
 
 
+
+
+
+                    }
                 }
             }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Arquivo Excel não encontrado!");
         }
+
 
     }
 }
