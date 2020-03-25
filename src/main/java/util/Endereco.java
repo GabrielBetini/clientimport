@@ -9,15 +9,13 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
 public class Endereco {
-    private static final long serialVersionUID = 1L;
-    private String tipoEndereco = "COMERCIAL";
-    private String cep = "";
-    private String tipoLogradouro = "";
-    private String numero = "";
-    private String complemento = "";
-    private String bairro = "";
+    private String tipoEndereco;
+    private String cep;
+    private String tipoLogradouro;
+    private String numero;
+    private String complemento;
+    private String bairro;
 
 }
 

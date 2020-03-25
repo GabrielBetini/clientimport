@@ -25,22 +25,22 @@ public class XSSFDoc {
             XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
             XSSFSheet sheetCustomer = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheetCustomer.iterator();
+            List<CustomerC> customerList = new ArrayList<CustomerC>();
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 Iterator<Cell> cellIterator = row.cellIterator();
 
-                customer.add(new CustomerC());
+
                 while (cellIterator.hasNext()) {
+                    CustomerC customerC = new CustomerC();
+                    Endereco endereco = new Endereco();
                     Cell cell = cellIterator.next();
                     switch (cell.getColumnIndex()) {
                         case 0:
-
-
-
-
-
-
+                                endereco.setBairro("lala");
+                                customerC.getEnderecos().add(endereco);
+                                customerList.add(customerC);
                     }
                 }
             }

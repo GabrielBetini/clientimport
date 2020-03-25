@@ -1,5 +1,6 @@
 package util;
 
+import classes.XSSFDoc;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @Entity
 public class CustomerC {
-
     private ArrayList<Endereco> enderecos = new ArrayList<Endereco>();
+
 
     private Integer birthday = 0;
     private Integer codigo = 0;
@@ -32,10 +33,6 @@ public class CustomerC {
     private String fone = "";
     private String observacao = "";
 
-    //    @JoinTable(name = "Endereco",
-//            joinColumns = {@JoinColumn(name = "codCostumer", referencedColumnName = "codigo")},
-//            inverseJoinColumns = {@JoinColumn(name = "codEndereco", referencedColumnName = "codigo")})
-//    @ManyToMany
 
     public String toString() {
         return "CustomerC{" +
@@ -60,3 +57,4 @@ public class CustomerC {
                 '}';
     }
 }
+

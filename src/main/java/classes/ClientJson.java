@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.*;
 import util.CustomerC;
+import util.Endereco;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -26,6 +27,7 @@ public class ClientJson {
 
     private void sendPOST() throws IOException {
         Gson gson = new GsonBuilder().create();
+
 
         //Setup the request, passing the "CustomerC" class as parameter
         RequestBody body = RequestBody.create(
