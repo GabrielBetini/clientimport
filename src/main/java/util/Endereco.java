@@ -3,19 +3,20 @@ package util;
 import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Endereco {
-    private String tipoEndereco;
-    private String cep;
-    private String tipoLogradouro;
-    private String numero;
-    private String complemento;
-    private String bairro;
+    private TipoEnderecoEnum tipoEnderecoEnum;
+    private String cep = "";
+    private final String tipoLogradouro = "RUA";
+    private String numero = "";
+    private String complemento = "";
+    private String bairro = "";
+    private String endereco = "";
+    private String municipio = "";
 
 }
 
