@@ -1,6 +1,8 @@
 package util;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 
@@ -16,7 +18,8 @@ public class Endereco {
     private String complemento = "";
     private String bairro = "";
     private String endereco = "";
-    private String municipio = "";
+    private Integer municipio;
+    private Integer pais;
 
 }
 

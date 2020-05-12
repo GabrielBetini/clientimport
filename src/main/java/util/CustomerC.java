@@ -1,20 +1,17 @@
 package util;
 
 import classes.TipoPessoaEnum;
-import classes.XSSFDoc;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class CustomerC {
-    private ArrayList<Endereco> enderecos = new ArrayList<Endereco>();
+    private ArrayList<Endereco> enderecos = new ArrayList<>();
 
     private Integer birthday = 0;
     private final String tipoCustomer = "CLIENTE";

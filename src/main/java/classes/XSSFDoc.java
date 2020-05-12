@@ -1,5 +1,18 @@
 package classes;
 
+import com.google.gson.Gson;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import util.CepResponse;
+import util.CustomerC;
+import util.Endereco;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,18 +20,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import util.CustomerC;
-import util.Endereco;
+import java.util.Objects;
 
 
 public class XSSFDoc {
-    private static final String fileName = "C:\\util\\planilha\\clientes.xlsx";
-    private List<CustomerC> customer = new ArrayList<CustomerC>();
+    private static final String fileName = "/home/nsd_rgeraldo/Downloads/clientes.xlsx";
+    public List<CustomerC> customerList = new ArrayList<>();
 
     public XSSFDoc() throws IOException {
         try {
@@ -26,7 +33,7 @@ public class XSSFDoc {
             XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
             XSSFSheet sheetCustomer = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheetCustomer.iterator();
-            List<CustomerC> customerList = new ArrayList<CustomerC>();
+            Gson gson = new Gson();
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
@@ -37,18 +44,49 @@ public class XSSFDoc {
                 while (cellIterator.hasNext()) {
 
                     Cell cell = cellIterator.next();
+                    OkHttpClient httpClient = new OkHttpClient();
                     switch (cell.getColumnIndex()) {
                         case 0:
-                            customerC.setBirthday(Integer.valueOf((int) cell.getNumericCellValue()));
+                            customerC.setBirthday((int) cell.getNumericCellValue());
                             break;
                         case 1:
-                            endereco.setCep(cell.getStringCellValue());
+                            String cep;
+                            if (cell.getCellType() == CellType.STRING) {
+                                cep = cell.getStringCellValue();
+                            }
+                            else{
+                                cep = String.valueOf(cell.getNumericCellValue());
+                            }
+                            endereco.setCep(cep);
+                            // json request body
+                            Request request = new Request.Builder()
+                                    .url("https://api-dev.smartpos.net.br/api/v1/endereco/cep/" + cep)
+                                    .addHeader("Authorization", "NA-AUTH HJwi8Nvh8kaE/4rgvC+z/9t+BF2+XMIV4zue2NgZxA6PiqxqsguoBeeAX4XqWd7vEf4YPYAvo2xkOFE9swMKruvhN5xVTPtE+wqQZueXuy89IHXEhC4DS1nnH3O+fGuV6wAzco7TzBKkgNBlQUCrJL8rax4uqzY83mFNVymxd2Pr4TecVUz7RPsKkGbnl7sv8etzcWCOpyHCONQYo0bWFusAM3KO08wSpIDQZUFAqySpUuERIb4NQbEly3YXWKBS")
+                                    .addHeader("Content-Type", "application/json")
+                                    .get()
+                                    .build();
+                            try (Response response = httpClient.newCall(request).execute()) {
+
+                                if (!response.isSuccessful()) {
+                                    throw new IOException("Unexpected code " + response + customerC.toString());
+                                }
+                                String responseBody = Objects.requireNonNull(response.body()).string();
+                                CepResponse entity = gson.fromJson(responseBody, CepResponse.class);
+                                endereco.setMunicipio(entity.getMunicipio());
+                                endereco.setPais(entity.getPais());
+                            }
+
                             break;
                         case 2:
                             endereco.setEndereco(cell.getStringCellValue());
                             break;
                         case 3:
-                            endereco.setNumero(cell.getStringCellValue());
+                            if (cell.getCellType() == CellType.STRING){
+                                endereco.setNumero(cell.getStringCellValue());
+                            }
+                            else{
+                                endereco.setNumero(String.valueOf(cell.getNumericCellValue()));
+                            }
                             break;
                         case 4:
                             endereco.setComplemento(cell.getStringCellValue());
@@ -56,15 +94,11 @@ public class XSSFDoc {
                         case 5:
                             endereco.setBairro(cell.getStringCellValue());
                             break;
-                        case 6:
-                            endereco.setMunicipio(cell.getStringCellValue());
-                            break;
                         case 7:
-                            if (cell.getStringCellValue() != "JURIDICA") {
-                                customerC.setTipoPessoa(TipoPessoaEnum.FISICA);
-                            }
-                            else {
+                            if (cell.getStringCellValue().equals("JURIDICA")) {
                                 customerC.setTipoPessoa(TipoPessoaEnum.JURIDICA);
+                            } else {
+                                customerC.setTipoPessoa(TipoPessoaEnum.FISICA);
                             }
                             break;
                         case 8:
@@ -74,26 +108,36 @@ public class XSSFDoc {
                             customerC.setFantasia(cell.getStringCellValue());
                             break;
                         case 10:
-                            customerC.setCpfCnpj(cell.getStringCellValue());
+                            if (cell.getCellType() == CellType.STRING) {
+                                customerC.setCpfCnpj(cell.getStringCellValue());
+                            }
+                            else{
+                                customerC.setCpfCnpj(String.valueOf(cell.getNumericCellValue()));
+                            }
                             break;
                         case 11:
                             customerC.setLimit(cell.getNumericCellValue());
                             break;
                         case 12:
-                            customerC.setRgIe(cell.getStringCellValue());
+                            if (cell.getCellType() == CellType.STRING) {
+                                customerC.setRgIe(cell.getStringCellValue());
+                            } else {
+                                customerC.setRgIe(String.valueOf(cell.getNumericCellValue()));
+                            }
                             break;
                         case 13:
                             customerC.setEmail(cell.getStringCellValue());
                             break;
                         case 14:
-                            if (cell.getStringCellValue() == "S") {
-                                customerC.setEhSimples(true);
-                            } else {
-                                customerC.setEhSimples(false);
-                            }
+                            customerC.setEhSimples(cell.getStringCellValue().equals("S") || cell.getStringCellValue().equals("s"));
                             break;
                         case 15:
-                            customerC.setCelular(cell.getStringCellValue());
+                            if(cell.getCellType() == CellType.STRING) {
+                                customerC.setCelular(cell.getStringCellValue());
+                            }
+                            else{
+                                customerC.setCelular(String.valueOf(cell.getNumericCellValue()));
+                            }
                             break;
                         case 16:
                             customerC.setFone(cell.getStringCellValue());
@@ -102,14 +146,19 @@ public class XSSFDoc {
                             customerC.setObservacao(cell.getStringCellValue());
                             break;
                         case 18:
-                            customerC.setSuframa((int) cell.getNumericCellValue());
-
-                            customerC.getEnderecos().add(endereco);
-                            customerList.add(customerC);
+                            if (cell.getCellType() ==  CellType.STRING){
+                                customerC.setSuframa(Integer.parseInt(cell.getStringCellValue()));
+                            }
+                            else {
+                                customerC.setSuframa((int) cell.getNumericCellValue());
+                            }
                             break;
-
+                        default:
+                            System.out.println("Default");
                     }
                 }
+                customerC.getEnderecos().add(endereco);
+                customerList.add(customerC);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -117,3 +166,4 @@ public class XSSFDoc {
         }
     }
 }
+
